@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسائل شكر - خط الدفاع الأول</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdf5f2; /* بيج دافئ جداً */
+            font-family: 'Tajawal', sans-serif;
+            color: #5d4037; /* بني غامق هادئ */
+        }
+
+        /* تصميم الظرف */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #d7ccc8; /* لون بني فاتح للظرف */
+            margin: 100px auto;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 100px solid transparent;
+            border-left: 150px solid #efe5fd; /* لون وردي خافت للجوانب */
+            border-right: 150px solid #efe5fd;
+            border-bottom: 100px solid #bcaaa4;
+            border-radius: 0 0 5px 5px;
+        }
+
+        /* غطاء الظرف */
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #a1887f; /* لون الغطاء */
+            transform-origin: top;
+            transition: transform 0.4s 0.6s ease;
+            z-index: 3;
+        }
+
+        /* الورقة */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 280px;
+            height: 180px;
+            background: #fffafa;
+            border: 1px solid #e0e0e0;
+            transition: all 0.6s ease;
+            z-index: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            resize: none;
+            outline: none;
+            font-size: 14px;
+            color: #5d4037;
+            background-image: linear-gradient(#e1d8d5 1px, transparent 1px);
+            background-size: 100% 25px;
+            line-height: 25px;
+        }
+
+        /* تأثير الحركة عند الإرسال */
+        .sent .letter {
+            bottom: 0 !important;
+            z-index: 1;
+        }
+        .sent .flap {
+            transform: rotateX(180deg);
+            z-index: 4;
+        }
+
+        .messages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .vintage-card {
+            background: #fce4ec; /* Pink */
+            border: 2px solid #d7ccc8;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px #d7ccc8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الجزء الأول: عرض الرسائل -->
+    <section class="max-w-5xl mx-auto mt-10">
+        <h1 class="text-3xl text-center mb-8 font-bold">رسائل ممتنة لخط دفاعنا الأول</h1>
+        <div id="messages-list" class="messages-container">
+            <!-- الرسائل من فايربيس ستظهر هنا -->
+            <div class="vintage-card">شكراً لكل من سهر لراحتنا.. أنتم فخرنا.</div>
+        </div>
+    </section>
+
+    <hr class="my-20 border-pink-200">
+
+    <!-- الجزء الثاني: كتابة رسالة (الظرف) -->
+    <section class="pb-20">
+        <h2 class="text-2xl text-center mb-5">اكتب رسالتك الخاصة</h2>
+        <div class="envelope-wrapper" id="envelope">
+            <div class="flap"></div>
+            <div class="letter" id="letter-sheet" style="bottom: 100px;">
+                <textarea id="message-text" placeholder="اكتب كلماتك من القلب..."></textarea>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <button onclick="sendLetter()" id="send-btn" class="bg-[#8d6e63] text-white px-8 py-2 rounded-full hover:bg-[#6d4c41] transition">
+                إرسال الرسالة
+            </button>
+        </div>
+    </section>
+
+    <!-- ربط Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // --- هنا تضعين بيانات الفايربيس الخاصة بك ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-3K_Cgx4daxN9EsCG7DS30knxAlKsJFo",
+            authDomain: "heroes-pride-wall.firebaseapp.com",
+            projectId: "heroes-pride-wall",
+            storageBucket: "heroes-pride-wall.firebasestorage.app",
+            messagingSenderId: "718173822562",
+            appId: "1:718173822562:web:c11036e15b1a5bc44ebb3b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // وظيفة الإرسال
+        window.sendLetter = async () => {
+            const text = document.getElementById('message-text').value;
+            if(!text) return alert("من فضلك اكتب شيئاً!");
+
+            try {
+                // حفظ في فايربيس
+                await addDoc(collection(db, "thanks_messages"), {
+                    content: text,
+                    timestamp: new Date()
+                });
+
+                // حركة الظرف
+                const envelope = document.getElementById('envelope');
+                const letter = document.getElementById('letter-sheet');
+                
+                letter.style.bottom = "0"; // الورقة تدخل
+                setTimeout(() => {
+                    envelope.classList.add('sent'); // الغطاء يغلق
+                }, 400);
+
+                setTimeout(() => {
+                    alert("تم إرسال رسالتك بنجاح!");
+                    location.reload(); // إعادة تحميل لرؤية الرسالة الجديدة
+                }, 1500);
+
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        };
+
+        // وظيفة جلب الرسائل
+        const loadMessages = async () => {
+            const q = query(collection(db, "thanks_messages"), orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+            const list = document.getElementById('messages-list');
+            list.innerHTML = ""; // مسح التجريبي
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const card = `<div class="vintage-card">${data.content}</div>`;
+                list.innerHTML += card;
+            });
+        };
+
+        loadMessages();
+    </script>
+</body>
+</html>
