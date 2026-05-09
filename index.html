@@ -7,104 +7,194 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #fdf5f2; /* بيج دافئ جداً */
-            font-family: 'Tajawal', sans-serif;
-            color: #5d4037; /* بني غامق هادئ */
-        }
+body{
+    background:#fdf5f2;
+    font-family:'Tajawal', sans-serif;
+    color:#5d4037;
 
-        /* تصميم الظرف */
-        .envelope-wrapper {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: #d7ccc8; /* لون بني فاتح للظرف */
-            margin: 100px auto;
-            border-radius: 0 0 5px 5px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 
-        .envelope-wrapper::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            z-index: 2;
-            border-top: 100px solid transparent;
-            border-left: 150px solid #efe5fd; /* لون وردي خافت للجوانب */
-            border-right: 150px solid #efe5fd;
-            border-bottom: 100px solid #bcaaa4;
-            border-radius: 0 0 5px 5px;
-        }
+    min-height:100vh;
+    overflow-x:hidden;
+}
 
-        /* غطاء الظرف */
-        .flap {
-            position: absolute;
-            top: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid #a1887f; /* لون الغطاء */
-            transform-origin: top;
-            transition: transform 0.4s 0.6s ease;
-            z-index: 3;
-        }
+/* تصميم الظرف */
+.envelope-wrapper{
+    position:relative;
 
-        /* الورقة */
-        .letter {
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-            width: 280px;
-            height: 180px;
-            background: #fffafa;
-            border: 1px solid #e0e0e0;
-            transition: all 0.6s ease;
-            z-index: 1;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
+    width:340px;
+    min-height:240px;
 
-        textarea {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: transparent;
-            resize: none;
-            outline: none;
-            font-size: 14px;
-            color: #5d4037;
-            background-image: linear-gradient(#e1d8d5 1px, transparent 1px);
-            background-size: 100% 25px;
-            line-height: 25px;
-        }
+    margin:100px auto;
 
-        /* تأثير الحركة عند الإرسال */
-        .sent .letter {
-            bottom: 0 !important;
-            z-index: 1;
-        }
-        .sent .flap {
-            transform: rotateX(180deg);
-            z-index: 4;
-        }
+    border-radius:14px;
 
-        .messages-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
+    background:
+    linear-gradient(
+        145deg,
+        #caa892 0%,
+        #b08972 45%,
+        #8d6e63 100%
+    );
 
-        .vintage-card {
-            background: #fce4ec; /* Pink */
-            border: 2px solid #d7ccc8;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 4px 4px 0px #d7ccc8;
-        }
+    box-shadow:
+    0 15px 35px rgba(0,0,0,0.14),
+    inset 0 2px 10px rgba(255,255,255,0.12);
+
+    overflow:visible;
+}
+
+/* جسم الظرف */
+.envelope-wrapper::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #d9b7a4,
+        #996f5f
+    );
+
+    clip-path:polygon(
+        0 0,
+        50% 52%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+
+    border-radius:14px;
+
+    z-index:1;
+}
+
+/* غطاء الظرف */
+.flap {
+    position: absolute;
+    top: -120px; 
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: #8d6e63; /* لون صريح عشان ما يختفيش */
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    transform-origin: bottom; /* الدوران من القاعدة */
+    transition: transform 0.8s ease-in-out;
+    z-index: 50; /* رقم عالي عشان يفضل فوق جسم الظرف */
+    backface-visibility: visible; /* عشان نشوفه وهو بينقلب */
+}
+
+
+/*االورقة*/
+.letter {
+	position: relative;
+	z-index: 99; /* رقم كبير جداً عشان تضمنين إنها فوق كل حاجة */
+    width: 88%;
+    min-height: 190px;
+    /* التعديل هنا: زدنا المسافة العلوية لتبدأ من أسفل قاعدة الغطاء */
+    margin: 10px auto 20px; 
+    background: #fffdfa;
+    border: 1px solid #eaded8;
+    border-radius: 12px;
+    padding: 22px;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    /* التعديل هنا: جعلناها خلف الغطاء (الذي هو 5) وأمام الجسم */
+    transition: transform 1s cubic-bezier(.68,-0.2,.27,1.2);
+}
+
+/* textarea */
+textarea{
+    width:100%;
+    min-height:140px;
+
+    border:none;
+    outline:none;
+
+    resize:none;
+
+    background:transparent;
+
+    overflow:hidden;
+
+    font-size:15px;
+    line-height:30px;
+
+    color:#5d4037;
+
+    font-family:'Tajawal',sans-serif;
+
+    background-image:
+    linear-gradient(#eaded8 1px, transparent 1px);
+
+    background-size:100% 30px;
+}
+
+/* حركة الإرسال */
+.sent .letter {
+    /* الورقة تنزل لأسفل وتصغر قليلاً لتبدو كأنها دخلت الظرف */
+    transform: translateY(110px) scale(0.95);
+    z-index: 0; /* تصبح خلف كل شيء */
+}
+
+/* حركة الإرسال - إغلاق الغطاء */
+.sent .flap {
+	z-index: 100;
+    /* ينقلب للأسفل ليغطي جسم الظرف */
+    transform: rotateX(-180deg); 
+}
+
+
+/* الرسائل */
+.messages-container{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:22px;
+
+    width:100%;
+    max-width:1100px;
+
+    margin:auto;
+
+    padding:20px;
+}
+
+.vintage-card{
+    background:
+    linear-gradient(
+        to bottom,
+        #fffdfa,
+        #f9efe8
+    );
+
+    border:1px solid #eaded8;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    line-height:2;
+
+    box-shadow:
+    0 10px 24px rgba(0,0,0,0.07);
+
+    transition:0.3s;
+}
+
+.vintage-card:hover{
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 14px 30px rgba(0,0,0,0.10);
+}
     </style>
 </head>
 <body>
@@ -171,7 +261,7 @@
                 const envelope = document.getElementById('envelope');
                 const letter = document.getElementById('letter-sheet');
                 
-                letter.style.bottom = "0"; // الورقة تدخل
+                // الورقة تدخل
                 setTimeout(() => {
                     envelope.classList.add('sent'); // الغطاء يغلق
                 }, 400);
