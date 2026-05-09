@@ -194,12 +194,75 @@ textarea{
 
     box-shadow:
     0 14px 30px rgba(0,0,0,0.10);
+	
+	html {
+    scroll-behavior: smooth; /* هذا السطر هو المسؤول عن نعومة التنقل */
 }
     </style>
 </head>
-<body>
+<nav class="fixed top-0 w-full z-[1000] bg-white/90 backdrop-blur-sm border-b border-[#8d6e63]/20 px-8 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-[#8d6e63]">خط الدفاع الأول</div>
+    <ul class="flex gap-8 text-[#5d4037] font-medium">
+        <li><a href="#hero" class="hover:text-[#8d6e63] transition">الرئيسية</a></li>
+        <li><a href="#video-section" class="hover:text-[#8d6e63] transition">الفيديو</a></li>
+        <li><a href="#pdf-section" class="hover:text-[#8d6e63] transition">المحتوى التعليمي</a></li>
+        <li><a href="#message-section" class="hover:text-[#8d6e63] transition">اكتب لنا</a></li>
+    </ul>
+</nav>
 
-    <!-- الجزء الأول: عرض الرسائل -->
+<section id="hero" class="relative w-full h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-[#8d6e63]">
+    <div class="absolute inset-0 opacity-20" style="background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');"></div>
+    
+    <div class="relative z-10">
+        <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 drop-shadow-lg">أبطال خط الدفاع الأول</h1>
+        <p class="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+            تحية إجلال لجنود الإنسانية الذين يحمون مجتمعنا ويخدمونه وقت الأزمات.
+        </p>
+        <div class="mt-10 flex gap-4 justify-center">
+            <a href="#message-section" class="bg-white text-[#8d6e63] px-8 py-4 rounded-full font-bold shadow-xl hover:scale-105 transition">ابدأ الكتابة الآن</a>
+            <a href="#pdf-section" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-[#8d6e63] transition">عرض المبادرات</a>
+        </div>
+    </div>
+</section>
+	
+</header>
+
+<body>
+	<section id="video-section" class="w-full max-w-4xl mx-auto my-20 px-6">
+		<div class="text-center mb-10">
+			<h2 class="text-3xl font-bold text-[#8d6e63] mb-3">رسالة مرئية</h2>
+			<div class="w-24 h-1 bg-[#8d6e63] mx-auto rounded-full"></div>
+		</div>
+
+		<div class="video-container relative group">
+			<video 
+				controls 
+				class="w-full rounded-3xl shadow-2xl border-8 border-white/50 object-cover"
+				poster="thumbnail.png"> <source src="frontline-heroes1.mp4" type="video/mp4">
+				متصفحك لا يدعم تشغيل الفيديو.
+			</video>
+			
+			<div class="absolute -inset-2 bg-gradient-to-r from-[#caa892] to-[#8d6e63] rounded-[2rem] -z-10 blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
+		</div>
+		    
+
+<section id="pdf-section" class="w-full max-w-4xl mx-auto my-20 px-6">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-[#8d6e63] mb-3">أبطال خط الدفاع الأول</h2>
+        
+    </div>
+
+    <div class="bg-white p-2 rounded-3xl shadow-2xl border-4 border-[#8d6e63]/20">
+        <iframe 
+            src="أبطال خط الدفاع الأول.pdf" 
+            width="100%" 
+            height="700px" 
+            class="rounded-2xl border-none">
+        </iframe>
+    </div>
+	
+
+	</section>    <!-- الجزء الأول: عرض الرسائل -->
     <section class="max-w-5xl mx-auto mt-10">
         <h1 class="text-3xl text-center mb-8 font-bold">رسائل ممتنة لخط دفاعنا الأول</h1>
         <div id="messages-list" class="messages-container">
@@ -211,7 +274,7 @@ textarea{
     <hr class="my-20 border-pink-200">
 
     <!-- الجزء الثاني: كتابة رسالة (الظرف) -->
-    <section class="pb-20">
+    <section id="message-section" class="pb-20">
         <h2 class="text-2xl text-center mb-5">اكتب رسالتك الخاصة</h2>
         <div class="envelope-wrapper" id="envelope">
             <div class="flap"></div>
@@ -226,6 +289,7 @@ textarea{
             </button>
         </div>
     </section>
+
 
     <!-- ربط Firebase -->
     <script type="module">
