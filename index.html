@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>رسائل شكر - خط الدفاع الأول</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+      <style>
+         body{
+         background:#fdf5f2;
+         font-family:'Tajawal', sans-serif;
+         color:#5d4037;
+         display:flex;
+         flex-direction:column;
+         align-items:center;
+         min-height:100vh;
+         overflow-x:hidden;
+         }
+         /* تصميم الظرف */
+         .envelope-wrapper{
+         position:relative;
+         width:340px;
+         min-height:240px;
+         margin:100px auto;
+         border-radius:14px;
+         background:
+         linear-gradient(
+         145deg,
+         #caa892 0%,
+         #b08972 45%,
+         #8d6e63 100%
+         );
+         box-shadow:
+         0 15px 35px rgba(0,0,0,0.14),
+         inset 0 2px 10px rgba(255,255,255,0.12);
+         overflow:visible;
+         }
+         /* جسم الظرف */
+         .envelope-wrapper::before{
+         content:"";
+         position:absolute;
+         inset:0;
+         background:
+         linear-gradient(
+         to bottom,
+         #d9b7a4,
+         #996f5f
+         );
+         clip-path:polygon(
+         0 0,
+         50% 52%,
+         100% 0,
+         100% 100%,
+         0 100%
+         );
+         border-radius:14px;
+         z-index:1;
+         }
+         /* غطاء الظرف */
+         .flap {
+         position: absolute;
+         top: -120px; 
+         left: 0;
+         width: 100%;
+         height: 120px;
+         background: #8d6e63; /* لون صريح عشان ما يختفيش */
+         clip-path: polygon(0 100%, 50% 0, 100% 100%);
+         transform-origin: bottom; /* الدوران من القاعدة */
+         transition: transform 0.8s ease-in-out;
+         z-index: 50; /* رقم عالي عشان يفضل فوق جسم الظرف */
+         backface-visibility: visible; /* عشان نشوفه وهو بينقلب */
+         }
+         /*االورقة*/
+         .letter {
+         position: relative;
+         z-index: 99; /* رقم كبير جداً عشان تضمنين إنها فوق كل حاجة */
+         width: 88%;
+         min-height: 190px;
+         /* التعديل هنا: زدنا المسافة العلوية لتبدأ من أسفل قاعدة الغطاء */
+         margin: 10px auto 20px; 
+         background: #fffdfa;
+         border: 1px solid #eaded8;
+         border-radius: 12px;
+         padding: 22px;
+         box-sizing: border-box;
+         overflow: hidden;
+         box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+         /* التعديل هنا: جعلناها خلف الغطاء (الذي هو 5) وأمام الجسم */
+         transition: transform 1s cubic-bezier(.68,-0.2,.27,1.2);
+         }
+         /* textarea */
+         textarea{
+         width:100%;
+         min-height:140px;
+         border:none;
+         outline:none;
+         resize:none;
+         background:transparent;
+         overflow:hidden;
+         font-size:15px;
+         line-height:30px;
+         color:#5d4037;
+         font-family:'Tajawal',sans-serif;
+         background-image:
+         linear-gradient(#eaded8 1px, transparent 1px);
+         background-size:100% 30px;
+         }
+         /* حركة الإرسال */
+         .sent .letter {
+         /* الورقة تنزل لأسفل وتصغر قليلاً لتبدو كأنها دخلت الظرف */
+         transform: translateY(110px) scale(0.95);
+         z-index: 0; /* تصبح خلف كل شيء */
+         }
+         /* حركة الإرسال - إغلاق الغطاء */
+         .sent .flap {
+         z-index: 100;
+         /* ينقلب للأسفل ليغطي جسم الظرف */
+         transform: rotateX(-180deg); 
+         }
+         /* الرسائل */
+         .messages-container{
+         display:grid;
+         grid-template-columns:
+         repeat(auto-fit,minmax(260px,1fr));
+         gap:22px;
+         width:100%;
+         max-width:1100px;
+         margin:auto;
+         padding:20px;
+         }
+         .vintage-card {
+         background: rgba(255, 255, 255, 0.8); /* خلفية بيضاء شفافة */
+         backdrop-filter: blur(10px); /* تأثير الزجاج */
+         border: 1px solid rgba(141, 110, 99, 0.3);
+         border-radius: 20px;
+         padding: 25px;
+         position: relative;
+         overflow: hidden;
+         transition: all 0.5s ease;
+         /* الوهج الأساسي */
+         box-shadow: 0 10px 30px rgba(141, 110, 99, 0.1);
+         }
+         .vintage-card:hover {
+         transform: translateY(-10px) scale(1.02);
+         /* هنا اللعلطة! وهج ذهبي عند المرور بالماوس */
+         border-color: #caa892;
+         box-shadow: 0 20px 40px rgba(202, 168, 146, 0.4), 
+         0 0 20px rgba(202, 168, 146, 0.2);
+         }
+         /* إضافة لمعة بريق في زاوية كل رسالة */
+         .vintage-card::after {
+         content: "✉";
+         position: absolute;
+         top: 10px;
+         left: 10px;
+         font-size: 1.2rem;
+         opacity: 0.5;
+         }
+         #messages-list {
+         background: radial-gradient(circle at center, rgba(202, 168, 146, 0.15) 0%, transparent 70%);
+         padding: 40px;
+         border-radius: 50px;
+         }
+         @keyframes card-entry {
+         0% { opacity: 0; transform: translateY(20px) rotate(-2deg); }
+         100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+         }
+         .vintage-card {
+         animation: card-entry 0.8s ease-out forwards;
+         }
+         .map-wrapper {
+         filter: drop-shadow(0 0 20px rgba(202, 168, 146, 0.1));
+         }
+         /* النقطة التفاعلية */
+         .hotspot {
+         position: absolute;
+         width: 20px;
+         height: 20px;
+         background-color: #caa892;
+         border-radius: 50%;
+         cursor: pointer;
+         z-index: 999;
+         pointer-events: auto;
+         transform: translate(-50%, -50%);
+         transition: all 0.3s ease;
+         box-shadow: 0 0 15px rgba(202, 168, 146, 0.6);
+         }
+         /* أنيميشن النبض */
+         .hotspot::after {
+         content: '';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         width: 100%;
+         height: 100%;
+         background: inherit;
+         border-radius: 50%;
+         transform: translate(-50%, -50%);
+         animation: mapPulse 1.5s infinite;
+         }
+         /* Hover */
+         .hotspot:hover {
+         transform: translate(-50%, -50%) scale(1.5);
+         background-color: #fdf5f2;
+         box-shadow: 0 0 25px #caa892;
+         }
+         @keyframes mapPulse {
+         0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+         100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+         }
+         .modal-overlay {
+         position: fixed;
+         inset: 0;
+         background: rgba(0,0,0,0.7);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 99999;
+         opacity: 0;
+         visibility: hidden;
+         transition: 0.4s;
+         }
+         .modal-overlay.active{
+         opacity:1;
+         visibility:visible;
+         }
+         .close-btn {
+         position: absolute;
+         top: 20px;
+         left: 20px;
+         font-size: 30px;
+         background: none;
+         border: none;
+         color: #caa892;
+         cursor: pointer;
+         }
+         .custom-title {
+         font-family: 'Cairo', sans-serif;
+         }
+         #message-text {
+         font-family: 'Amiri', serif;
+         font-size: 1.2rem;
+         line-height: 1.8; /* عشان يمشي مع سطور الورقة لو موجودة */
+         background: transparent;
+         border: none;
+         resize: none;
+         width: 100%;
+         height: 100%;
+         padding: 10px;
+         outline: none;
+         }
+      </style>
+   </head>
+   <body class="hero-bg">
+      <nav class="fixed top-0 left-0 w-full z-[9999] bg-white/90 backdrop-blur-md border-b border-[#8d6e63]/20 px-8 py-4 flex justify-between items-center shadow-sm">
+         <div class="text-2xl font-bold text-[#8d6e63]">خط الدفاع الأول</div>
+         <ul class="flex gap-8 text-[#5d4037] font-medium">
+            <li><a href="#hero" class="hover:text-[#8d6e63] transition">الرئيسية</a></li>
+            <li><a href="#video-section" class="hover:text-[#8d6e63] transition">الفيديو</a></li>
+            <li><a href="#pdf-section" class="hover:text-[#8d6e63] transition">المحتوى التعليمي</a></li>
+            <li><a href="#message-section" class="hover:text-[#8d6e63] transition">اكتب لنا</a></li>
+         </ul>
+      </nav>
+      <header class="relative w-full h-screen flex items-center justify-center overflow-hidden px-8 lg:px-24">
+         <!-- طبقات الخلفية -->
+         <div class="particles"></div>
+         <div class="hero-glow left-[10%] top-[20%]"></div>
+         <div class="relative z-10 w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+         <!-- الجزء الأيمن: المحتوى النصي -->
+		<div class="text-right space-y-8 order-2 lg:order-1">
+		   <div class="space-y-4">
+			  <span class="inline-block px-4 py-1 rounded-full bg-[#8d6e63]/10 text-[#8d6e63] font-medium text-sm tracking-wide">
+			  مبادرة فخر الوطن
+			  </span>
+			  <h1 class="text-5xl lg:text-7xl font-extrabold text-[#5d4037] leading-tight drop-shadow-sm">
+				 أبطال خط <br> <span class="text-[#8d6e63]">الدفاع الأول</span>
+			  </h1>
+			  <p class="text-xl lg:text-2xl text-[#5d4037]/70 max-w-lg leading-relaxed">
+				 بفضل تضحياتهم... استمرت الحياة بأمان. قصص من العطاء لا تنتهي.
+			  </p>
+		   </div>
+		   
+		   <div class="flex flex-wrap gap-4 justify-end"> <button onclick="document.getElementById('pdf-section').scrollIntoView({ behavior: 'smooth' })" 
+					  class="px-8 py-4 bg-[#8d6e63] text-white rounded-2xl font-bold shadow-lg shadow-[#8d6e63]/20 hover:bg-[#5d4037] transition-all transform hover:scale-105">
+			  استكشف الأبطال
+			  </button>
+
+			  <button onclick="document.getElementById('message-section').scrollIntoView({ behavior: 'smooth' })" 
+					  class="px-8 py-4 glass-btn text-[#5d4037] rounded-2xl font-bold">
+			  أرسل رسالة شكر
+			  </button>
+
+		   </div>
+		</div>
+         <!-- الجزء الأيسر: الرسم التوضيحي (Illustration) -->
+         <div class="relative w-full lg:w-full h-full min-h-[400px] flex items-center order-1 lg:order-2">
+            <div class="relative w-full max-w-lg lg:absolute lg:left-0 lg:-translate-x-32">
+               <img src="MBN.jpg" 
+                  alt="Frontline Heroes" 
+                  class="w-3/5 h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] relative z-10 mx-auto lg:mx-0 rounded-2xl">
+               <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-[#8d6e63]/20 blur-3xl rounded-full"></div>
+            </div>
+         </div>
+      </header>
+      <!-- إضافة لمسة زخرفية خفيفة في الخلفية -->
+      <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
+      <div class="max-w-4xl mx-auto px-6 relative z-10 -mt50">
+         <div class="text-center mb60 mt-10">
+            <h2 class="text-4xl font-bold text-[#caa892] mb-3">نبذة خط الدفاع الأول</h2>
+            <div class="w-24 h-1 bg-[#caa892] mx-auto rounded-full"></div>
+            <p class="text-[#fdf5f2]/70 mt-4">شاهد قصة العطاء والتضحية</p>
+         </div>
+         <div class="relative group">
+            <div class="absolute -inset-2 bg-gradient-to-r from-[#caa892] to-[#b08972] rounded-[2.5rem] blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+            <video 
+               controls 
+               class="relative w-full rounded-[2rem] shadow-2xl border-4 border-[#caa892]/30 object-cover bg-black"
+               poster="thumbnail.png">
+               <source src="frontline-heroes1.mp4" type="video/mp4">
+               متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+         </div>
+      </div>
+      </section>
+      <div class="divider"></div>
+      <!-- قسم أبطال خط الدفاع الأول: PDF بنسبة 75% وصورة شفافة بنسبة 25% -->
+      <section id="pdf-section" class="w-full max-w-7xl mx-auto my-32 px-6">
+         <div class="grid grid-cols-12 gap-10 items-center">
+            <div class="col-span-12 lg:col-span-3 flex flex-col items-center group">
+               <div class="relative">
+                  <div class="absolute inset-0 bg-[#caa892]/10 blur-3xl rounded-full"></div>
+                  <img src="army1.png" alt="Emirati Soldier" 
+                     class="relative z-10 w-full h-auto max-w-[250px] drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)]">
+               </div>
+               <p class="text-[#5d4037]/60 text-sm mt-8 italic text-center leading-relaxed">
+                  "خلف ملامح الواجب.. <br> حكاية صمود لا ترويها إلا العيون."
+               </p>
+            </div>
+            <div class="col-span-12 lg:col-span-9">
+               <div class="bg-[#1a110e] p-4 rounded-[2rem] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] border border-white/5">
+                  <div class="overflow-hidden rounded-xl border border-[#8d6e63]/20">
+                     <iframe 
+                        src="أبطال خط الدفاع الأول.pdf" 
+                        type="application/pdf"
+                        width="100%" 
+                        height="750px" 
+                        class="border-none">
+                     </iframe>
+                  </div>
+                  <div class="mt-3 flex justify-center opacity-30">
+                     <div class="w-1 h-1 bg-[#caa892] rounded-full mx-1"></div>
+                     <div class="w-1 h-1 bg-[#caa892] rounded-full mx-1"></div>
+                     <div class="w-1 h-1 bg-[#caa892] rounded-full mx-1"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="w-full py-24 px-6 bg-[#fdf5f2]">
+         <div class="text-center mb-16">
+            <span class="inline-block px-4 py-1 rounded-full bg-[#8d6e63]/10 text-[#8d6e63] font-medium text-sm mb-4">
+            تكامل المعرفة
+            </span>
+            <h2 class="text-4xl lg:text-5xl font-bold text-[#5d4037] mb-6">
+               الربط بالمواد الدراسية
+            </h2>
+            <div class="w-24 h-1 bg-[#caa892] mx-auto rounded-full mb-6"></div>
+            <p class="text-[#5d4037]/70 text-lg max-w-2xl mx-auto leading-relaxed">
+               أبطال خط الدفاع الأول يجسدون مفاهيم نتعلمها يوميًا داخل المدرسة، محولين الكتب إلى واقع ملموس.
+            </p>
+         </div>
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <style>
+               .subject-card {
+               background: white;
+               border: 1px solid rgba(141, 110, 99, 0.1);
+               border-radius: 2rem;
+               padding: 2.5rem;
+               transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+               position: relative;
+               overflow: hidden;
+               }
+               .subject-card:hover {
+               transform: translateY(-12px);
+               box-shadow: 0 25px 50px -12px rgba(141, 110, 99, 0.15);
+               border-color: #caa892;
+               }
+               .icon-bg {
+               width: 70px;
+               height: 70px;
+               background: #fdf5f2;
+               border-radius: 1.25rem;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 2.5rem;
+               margin-bottom: 1.5rem;
+               transition: transform 0.3s ease;
+               }
+               .subject-card:hover .icon-bg {
+               transform: rotate(10deg) scale(1.1);
+               background: #caa892;
+               }
+            </style>
+            <div class="subject-card group">
+               <div class="icon-bg">🧪</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">العلوم</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  يعتمد الأطباء والمسعفون على العلوم الطبية والأحياء لفهم الأمراض وتقديم الرعاية الصحية وإنقاذ الأرواح.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">📐</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الرياضيات</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  تُستخدم الرياضيات في حساب الجرعات الطبية بدقة متناهية، وتحديد المسافات، وتحليل البيانات الصحية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">💻</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التكنولوجيا</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  ساعد الذكاء الاصطناعي والأنظمة الذكية في تسريع الاستجابة للطوارئ وتحسين جودة الخدمات الطبية الرقمية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">🌍</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الجغرافيا</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  تساعد الخرائط والمواقع الجغرافية وأنظمة الـ GPS فرق الإنقاذ على الوصول السريع لأي نقطة في الوطن.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">🇦🇪</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التربية الوطنية</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  يعكس خط الدفاع الأول أسمى قيم الولاء والانتماء والمسؤولية المجتمعية التي نعتز بها في هويتنا الإماراتية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">📖</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">اللغة العربية</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  ببلاغة لغتنا، نعبر من خلال الكتابة والشعر عن فخرنا بجهود أبطالنا، موثقين تضحياتهم في تاريخنا.
+               </p>
+            </div>
+         </div>
+      </section>
+      <!-- الجزء الأول: عرض الرسائل -->
+      <section class="max-w-5xl mx-auto mt-10">
+         <h1 class="text-3xl text-center mb-8 font-bold">رسائل ممتنة لخط دفاعنا الأول</h1>
+         <div id="messages-list" class="messages-container">
+            <!-- الرسائل من فايربيس ستظهر هنا -->
+            <div class="vintage-card">شكراً لكل من سهر لراحتنا.. أنتم فخرنا.</div>
+         </div>
+      </section>
+      <hr class="my-20 border-pink-200">
+      <!-- الجزء الثاني: كتابة رسالة (الظرف) -->
+      <section id="message-section" class="pb-20 text-center">
+         <h2 class="custom-title text-3xl font-bold text-[#8d6e63] -mt-10 mb-8 relative z-20">
+            اكتب رسالتك الخاصة
+         </h2>
+         <div class="envelope-wrapper mx-auto" id="envelope">
+            <div class="flap"></div>
+            <div class="letter" id="letter-sheet" style="bottom: 100px;">
+               <textarea id="message-text" placeholder="اكتب كلماتك من القلب..."></textarea>
+            </div>
+         </div>
+         <div class="text-center mt-10">
+            <button onclick="sendLetter()" id="send-btn" class="bg-[#8d6e63] text-white px-10 py-3 rounded-full hover:bg-[#6d4c41] transition-all transform hover:scale-105 shadow-md font-bold">
+            إرسال الرسالة
+            </button>
+         </div>
+      </section>
+      <footer class="relative w-full py-20 bg-[#2d1b15] overflow-hidden">
+         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#8d6e63]/10 blur-[120px] rounded-full"></div>
+         <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col items-center text-center">
+               <div class="mb-12">
+                  <p class="text-2xl lg:text-4xl font-medium text-[#fdf5f2] italic leading-relaxed drop-shadow-lg">
+                     "كل رسالة امتنان هنا… هي تقدير لمن وقفوا لحماية المجتمع."
+                  </p>
+                  <div class="w-20 h-[1px] bg-[#caa892] mx-auto mt-8 opacity-50"></div>
+               </div>
+               <div class="bg-white/5 backdrop-blur-md border border-white/10 px-10 py-8 rounded-[2.5rem] shadow-2xl">
+                  <p class="text-[#caa892] text-lg font-bold mb-3 tracking-wide">
+                     مشروع رقمي تفاعلي لتقدير أبطال خط الدفاع الأول
+                  </p>
+                  <p class="text-[#fdf5f2]/40 text-sm">
+                     جميع الحقوق محفوظة &copy; ٢٠٢٦ | صُنع بكل فخر واعتزاز
+                  </p>
+               </div>
+               <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+                  class="mt-16 group flex flex-col items-center gap-3">
+                  <div class="w-14 h-14 rounded-full border border-[#caa892]/20 flex items-center justify-center group-hover:border-[#caa892] transition-all duration-500 bg-[#3d2a23]">
+                     <svg class="w-6 h-6 text-[#caa892] transform group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                     </svg>
+                  </div>
+                  <span class="text-[10px] uppercase tracking-[0.2em] text-[#caa892] font-bold opacity-50">للأعلى</span>
+               </button>
+            </div>
+         </div>
+      </footer>
+      <!-- ربط Firebase -->
+      <script type="module">
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+         import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+         
+         // --- هنا تضعين بيانات الفايربيس الخاصة بك ---
+         const firebaseConfig = {
+             apiKey: "AIzaSyC-3K_Cgx4daxN9EsCG7DS30knxAlKsJFo",
+             authDomain: "heroes-pride-wall.firebaseapp.com",
+             projectId: "heroes-pride-wall",
+             storageBucket: "heroes-pride-wall.firebasestorage.app",
+             messagingSenderId: "718173822562",
+             appId: "1:718173822562:web:c11036e15b1a5bc44ebb3b"
+         };
+         
+         const app = initializeApp(firebaseConfig);
+         const db = getFirestore(app);
+         
+         // وظيفة الإرسال
+         window.sendLetter = async () => {
+             const text = document.getElementById('message-text').value;
+             if(!text) return alert("من فضلك اكتب شيئاً!");
+         
+             try {
+                 // حفظ في فايربيس
+                 await addDoc(collection(db, "thanks_messages"), {
+                     content: text,
+                     timestamp: new Date()
+                 });
+         
+                 // حركة الظرف
+                 const envelope = document.getElementById('envelope');
+                 const letter = document.getElementById('letter-sheet');
+                 
+                 // الورقة تدخل
+                 setTimeout(() => {
+                     envelope.classList.add('sent'); // الغطاء يغلق
+                 }, 400);
+         
+                 setTimeout(() => {
+                     alert("تم إرسال رسالتك بنجاح!");
+                     location.reload(); // إعادة تحميل لرؤية الرسالة الجديدة
+                 }, 1500);
+         
+             } catch (e) {
+                 console.error("Error adding document: ", e);
+             }
+         };
+         
+         // وظيفة جلب الرسائل
+         const loadMessages = async () => {
+             const q = query(collection(db, "thanks_messages"), orderBy("timestamp", "desc"));
+             const querySnapshot = await getDocs(q);
+             const list = document.getElementById('messages-list');
+             list.innerHTML = ""; // مسح التجريبي
+             
+             querySnapshot.forEach((doc) => {
+                 const data = doc.data();
+                 const card = `<div class="vintage-card">${data.content}</div>`;
+                 list.innerHTML += card;
+             });
+         };
+         
+         loadMessages();
+      </script>
+   </body>
+</html>
