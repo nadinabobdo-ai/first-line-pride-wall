@@ -130,32 +130,28 @@
          padding:20px;
          }
          .vintage-card {
-         background: rgba(255, 255, 255, 0.8); /* خلفية بيضاء شفافة */
-         backdrop-filter: blur(10px); /* تأثير الزجاج */
-         border: 1px solid rgba(141, 110, 99, 0.3);
-         border-radius: 20px;
-         padding: 25px;
+         background: linear-gradient(145deg, #fffaf7, #f3e8e2);
+         border: 1px solid rgba(141,110,99,0.25);
+         border-radius: 18px;
+         padding: 22px;
          position: relative;
-         overflow: hidden;
-         transition: all 0.5s ease;
-         /* الوهج الأساسي */
-         box-shadow: 0 10px 30px rgba(141, 110, 99, 0.1);
+         box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+         transition: all 0.4s ease;
          }
-         .vintage-card:hover {
-         transform: translateY(-10px) scale(1.02);
-         /* هنا اللعلطة! وهج ذهبي عند المرور بالماوس */
-         border-color: #caa892;
-         box-shadow: 0 20px 40px rgba(202, 168, 146, 0.4), 
-         0 0 20px rgba(202, 168, 146, 0.2);
-         }
-         /* إضافة لمعة بريق في زاوية كل رسالة */
-         .vintage-card::after {
-         content: "✉";
+         /* ختم صغير */
+         .vintage-card::before {
+         content: "مختومة بالامتنان";
          position: absolute;
          top: 10px;
-         left: 10px;
-         font-size: 1.2rem;
-         opacity: 0.5;
+         left: 12px;
+         font-size: 10px;
+         color: #caa892;
+         opacity: 0.7;
+         letter-spacing: 1px;
+         }
+         .vintage-card:hover {
+         transform: translateY(-6px);
+         box-shadow: 0 20px 40px rgba(202,168,146,0.25);
          }
          #messages-list {
          background: radial-gradient(circle at center, rgba(202, 168, 146, 0.15) 0%, transparent 70%);
@@ -293,16 +289,18 @@
                   أبطال خط <br> <span class="text-[#8d6e63]">الدفاع الأول</span>
                </h1>
                <p class="text-xl lg:text-2xl text-[#5d4037]/70 max-w-lg leading-relaxed">
-                  بفضل تضحياتهم... استمرت الحياة بأمان. قصص من العطاء لا تنتهي.
+                  مساحة رقمية للتعبير عن امتناننا لخط الدفاع الأول،  
+                  بفضل تضحياتهم استمرت الحياة بأمان…  
+                  قصص من العطاء لا تنتهي، تُكتب هنا من القلب إلى القلب.
                </p>
             </div>
-            <div class="flex flex-wrap gap-4 justify-end"> <button onclick="document.getElementById('pdf-section').scrollIntoView({ behavior: 'smooth' })" 
+            <div class="flex flex-wrap gap-4 justify-end"> <button onclick="document.getElementById('message-section').scrollIntoView({ behavior: 'smooth' })" 
                class="px-8 py-4 bg-[#8d6e63] text-white rounded-2xl font-bold shadow-lg shadow-[#8d6e63]/20 hover:bg-[#5d4037] transition-all transform hover:scale-105">
-               استكشف الأبطال
-               </button>
-               <button onclick="document.getElementById('message-section').scrollIntoView({ behavior: 'smooth' })" 
-                  class="px-8 py-4 glass-btn text-[#5d4037] rounded-2xl font-bold">
                أرسل رسالة شكر
+               </button>
+               <button onclick="document.getElementById('pdf-section').scrollIntoView({ behavior: 'smooth' })" 
+                  class="px-8 py-4 glass-btn text-[#5d4037] rounded-2xl font-bold">
+               نبذة عن خط الدفاع الأول
                </button>
             </div>
          </div>
@@ -397,94 +395,95 @@
          </div>
       </section>
       <section class="w-full py-24 px-6 bg-[#fdf5f2]">
-      <div class="text-center mb-16">
-         <span class="inline-block px-4 py-1 rounded-full bg-[#8d6e63]/10 text-[#8d6e63] font-medium text-sm mb-4">
-         تكامل المعرفة
-         </span>
-         <h2 class="text-4xl lg:text-5xl font-bold text-[#5d4037] mb-6">
-            الربط بالمواد الدراسية
-         </h2>
-         <div class="w-24 h-1 bg-[#caa892] mx-auto rounded-full mb-6"></div>
-         <p class="text-[#5d4037]/70 text-lg max-w-2xl mx-auto leading-relaxed">
-            أبطال خط الدفاع الأول يجسدون مفاهيم نتعلمها يوميًا داخل المدرسة، محولين الكتب إلى واقع ملموس.
-         </p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-         <style>
-            .subject-card {
-            background: white;
-            border: 1px solid rgba(141, 110, 99, 0.1);
-            border-radius: 2rem;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            }
-            .subject-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px -12px rgba(141, 110, 99, 0.15);
-            border-color: #caa892;
-            }
-            .icon-bg {
-            width: 70px;
-            height: 70px;
-            background: #fdf5f2;
-            border-radius: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
-            }
-            .subject-card:hover .icon-bg {
-            transform: rotate(10deg) scale(1.1);
-            background: #caa892;
-            }
-         </style>
-         <div class="subject-card group">
-            <div class="icon-bg">🧪</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">العلوم</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               يعتمد الأطباء والمسعفون على العلوم الطبية والأحياء لفهم الأمراض وتقديم الرعاية الصحية وإنقاذ الأرواح.
+         <div class="text-center mb-16">
+            <span class="inline-block px-4 py-1 rounded-full bg-[#8d6e63]/10 text-[#8d6e63] font-medium text-sm mb-4">
+            تكامل المعرفة
+            </span>
+            <h2 class="text-4xl lg:text-5xl font-bold text-[#5d4037] mb-6">
+               الربط بالمواد الدراسية
+            </h2>
+            <div class="w-24 h-1 bg-[#caa892] mx-auto rounded-full mb-6"></div>
+            <p class="text-[#5d4037]/70 text-lg max-w-2xl mx-auto leading-relaxed">
+               أبطال خط الدفاع الأول يجسدون مفاهيم نتعلمها يوميًا داخل المدرسة، محولين الكتب إلى واقع ملموس.
             </p>
          </div>
-         <div class="subject-card group">
-            <div class="icon-bg">📐</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الرياضيات</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               تُستخدم الرياضيات في حساب الجرعات الطبية بدقة متناهية، وتحديد المسافات، وتحليل البيانات الصحية.
-            </p>
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <style>
+               .subject-card {
+               background: white;
+               border: 1px solid rgba(141, 110, 99, 0.1);
+               border-radius: 2rem;
+               padding: 2.5rem;
+               transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+               position: relative;
+               overflow: hidden;
+               }
+               .subject-card:hover {
+               transform: translateY(-12px);
+               box-shadow: 0 25px 50px -12px rgba(141, 110, 99, 0.15);
+               border-color: #caa892;
+               }
+               .icon-bg {
+               width: 70px;
+               height: 70px;
+               background: #fdf5f2;
+               border-radius: 1.25rem;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 2.5rem;
+               margin-bottom: 1.5rem;
+               transition: transform 0.3s ease;
+               }
+               .subject-card:hover .icon-bg {
+               transform: rotate(10deg) scale(1.1);
+               background: #caa892;
+               }
+            </style>
+            <div class="subject-card group">
+               <div class="icon-bg">🧪</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">العلوم</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  يعتمد الأطباء والمسعفون على العلوم الطبية والأحياء لفهم الأمراض وتقديم الرعاية الصحية وإنقاذ الأرواح.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">📐</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الرياضيات</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  تُستخدم الرياضيات في حساب الجرعات الطبية بدقة متناهية، وتحديد المسافات، وتحليل البيانات الصحية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">💻</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التكنولوجيا</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  ساعد الذكاء الاصطناعي والأنظمة الذكية في تسريع الاستجابة للطوارئ وتحسين جودة الخدمات الطبية الرقمية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">🌍</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الجغرافيا</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  تساعد الخرائط والمواقع الجغرافية وأنظمة الـ GPS فرق الإنقاذ على الوصول السريع لأي نقطة في الوطن.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">🇦🇪</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التربية الوطنية</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  يعكس خط الدفاع الأول أسمى قيم الولاء والانتماء والمسؤولية المجتمعية التي نعتز بها في هويتنا الإماراتية.
+               </p>
+            </div>
+            <div class="subject-card group">
+               <div class="icon-bg">📖</div>
+               <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">اللغة العربية</h3>
+               <p class="text-[#5d4037]/80 leading-relaxed text-justify">
+                  ببلاغة لغتنا، نعبر من خلال الكتابة والشعر عن فخرنا بجهود أبطالنا، موثقين تضحياتهم في تاريخنا.
+               </p>
+            </div>
          </div>
-         <div class="subject-card group">
-            <div class="icon-bg">💻</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التكنولوجيا</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               ساعد الذكاء الاصطناعي والأنظمة الذكية في تسريع الاستجابة للطوارئ وتحسين جودة الخدمات الطبية الرقمية.
-            </p>
-         </div>
-         <div class="subject-card group">
-            <div class="icon-bg">🌍</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">الجغرافيا</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               تساعد الخرائط والمواقع الجغرافية وأنظمة الـ GPS فرق الإنقاذ على الوصول السريع لأي نقطة في الوطن.
-            </p>
-         </div>
-         <div class="subject-card group">
-            <div class="icon-bg">🇦🇪</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">التربية الوطنية</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               يعكس خط الدفاع الأول أسمى قيم الولاء والانتماء والمسؤولية المجتمعية التي نعتز بها في هويتنا الإماراتية.
-            </p>
-         </div>
-         <div class="subject-card group">
-            <div class="icon-bg">📖</div>
-            <h3 class="text-2xl font-bold mb-4 text-[#8d6e63]">اللغة العربية</h3>
-            <p class="text-[#5d4037]/80 leading-relaxed text-justify">
-               ببلاغة لغتنا، نعبر من خلال الكتابة والشعر عن فخرنا بجهود أبطالنا، موثقين تضحياتهم في تاريخنا.
-            </p>
-         </div>
-      </div>
+      </section>
       <footer class="relative w-full mt-32 py-20 bg-[#2d1b15] overflow-hidden">
          <!-- خلفية خفيفة -->
          <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
