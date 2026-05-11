@@ -303,6 +303,32 @@
             </div>
          </div>
       </header>
+	        <!-- الجزء الأول: عرض الرسائل -->
+      <section class="max-w-5xl mx-auto mt-10">
+         <h1 class="text-3xl text-center mb-8 font-bold">رسائل ممتنة لخط دفاعنا الأول</h1>
+         <div id="messages-list" class="messages-container">
+            <!-- الرسائل من فايربيس ستظهر هنا -->
+            <div class="vintage-card">شكراً لكل من سهر لراحتنا.. أنتم فخرنا.</div>
+         </div>
+      </section>
+      <hr class="my-20 border-pink-200">
+      <!-- الجزء الثاني: كتابة رسالة (الظرف) -->
+      <section id="message-section" class="pb-20 text-center">
+         <h2 class="custom-title text-3xl font-bold text-[#8d6e63] -mt-10 mb-8 relative z-20">
+            اكتب رسالتك الخاصة
+         </h2>
+         <div class="envelope-wrapper mx-auto" id="envelope">
+            <div class="flap"></div>
+            <div class="letter" id="letter-sheet" style="bottom: 100px;">
+               <textarea id="message-text" placeholder="اكتب كلماتك من القلب..."></textarea>
+            </div>
+         </div>
+         <div class="text-center mt-10">
+            <button onclick="sendLetter()" id="send-btn" class="bg-[#8d6e63] text-white px-10 py-3 rounded-full hover:bg-[#6d4c41] transition-all transform hover:scale-105 shadow-md font-bold">
+            إرسال الرسالة
+            </button>
+         </div>
+      </section>
       <!-- إضافة لمسة زخرفية خفيفة في الخلفية -->
       <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
       <div class="max-w-4xl mx-auto px-6 relative z-10 -mt50">
@@ -446,33 +472,6 @@
                </p>
             </div>
          </div>
-      </section>
-      <!-- الجزء الأول: عرض الرسائل -->
-      <section class="max-w-5xl mx-auto mt-10">
-         <h1 class="text-3xl text-center mb-8 font-bold">رسائل ممتنة لخط دفاعنا الأول</h1>
-         <div id="messages-list" class="messages-container">
-            <!-- الرسائل من فايربيس ستظهر هنا -->
-            <div class="vintage-card">شكراً لكل من سهر لراحتنا.. أنتم فخرنا.</div>
-         </div>
-      </section>
-      <hr class="my-20 border-pink-200">
-      <!-- الجزء الثاني: كتابة رسالة (الظرف) -->
-      <section id="message-section" class="pb-20 text-center">
-         <h2 class="custom-title text-3xl font-bold text-[#8d6e63] -mt-10 mb-8 relative z-20">
-            اكتب رسالتك الخاصة
-         </h2>
-         <div class="envelope-wrapper mx-auto" id="envelope">
-            <div class="flap"></div>
-            <div class="letter" id="letter-sheet" style="bottom: 100px;">
-               <textarea id="message-text" placeholder="اكتب كلماتك من القلب..."></textarea>
-            </div>
-         </div>
-         <div class="text-center mt-10">
-            <button onclick="sendLetter()" id="send-btn" class="bg-[#8d6e63] text-white px-10 py-3 rounded-full hover:bg-[#6d4c41] transition-all transform hover:scale-105 shadow-md font-bold">
-            إرسال الرسالة
-            </button>
-         </div>
-      </section>
       <footer class="relative w-full py-20 bg-[#2d1b15] overflow-hidden">
          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#8d6e63]/10 blur-[120px] rounded-full"></div>
          <div class="max-w-4xl mx-auto px-6 relative z-10">
